@@ -1,0 +1,34 @@
+---
+title: "README"
+author: "Annabelle Wan"
+date: "9/23/2021"
+output: github_document
+---
+
+
+```{r}
+url <- "https://guide.wisc.edu/faculty/"
+library(RCurl)
+library(XML)
+
+content <- getURL(url)
+split1 = unlist(strsplit(content, '.uw-people'))
+x=strsplit(split1, '\n\n\n')
+df <- data.frame(name=character(), position=character(), department=character(), degree=character(), mess=character())
+
+for (i in 2:27){
+  a=unlist(strsplit(x[[i]][1], '<li><p>'))
+  b=strsplit(a, '<br/>')
+  for (c in 1:length(b)){
+    if(length(b[[c]])==5){
+      df[nrow(df)+1, ] =b[[c]]
+    }
+  }
+}
+```
+
+```{r}
+df$mess <- NULL
+df
+```
+
